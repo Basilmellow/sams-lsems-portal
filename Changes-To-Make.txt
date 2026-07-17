@@ -1,0 +1,954 @@
+## CRITICAL IMPLEMENTATION RULES
+
+Do not blindly rebuild the website from scratch unless absolutely necessary. Preserve good existing UI components and functionality where possible, but update the architecture, navigation, content, branding, and data management according to these requirements.
+
+Before modifying anything:
+
+1. Inspect the complete project structure.
+2. Identify the framework and current routing system.
+3. Identify all pages, components, static data files, assets, authentication code, and API/backend functionality.
+4. Identify the LSEMS logo already present in the assets folder.
+5. Find every outdated SAMS/LSEMS rank, callsign, date, certificate requirement, SOP rule, FTD requirement, Medivac requirement, and EMS interaction reference.
+6. Remove dead code after implementing the changes.
+7. Make sure there are no broken routes, buttons, navigation items, or references to deleted sections.
+8. Keep the website fully responsive on desktop and mobile.
+9. Do not invent operational rules or information that is not specified below. If existing content conflicts with these instructions, these instructions take priority.
+10. After completing the implementation, run the project/build and fix all errors before considering the task complete.
+
+---
+
+# 1. GITHUB AND VERCEL WORKFLOW
+
+The project will now use a proper Git-based deployment workflow.
+
+The intended workflow is:
+
+**IDE/source code → Git commit → GitHub → Vercel automatic deployment**
+
+Ensure the project is structured correctly for GitHub and Vercel deployment.
+
+Do not store secrets, admin passwords, database credentials, or private keys directly in the repository.
+
+Use `.env` / environment variables where appropriate and ensure sensitive `.env` files are included in `.gitignore`.
+
+---
+
+# 2. ORGANIZATION STRUCTURE AND BRANDING
+
+Correctly represent the relationship between SAMS and LSEMS.
+
+**SAMS** = San Andreas Medical Services
+SAMS represents the state-level medical organization.
+
+**LSEMS** = Los Santos Emergency Medical Services
+LSEMS represents the Los Santos city emergency medical service.
+
+The portal may primarily use SAMS branding where organizationally appropriate, while LSEMS should be used where referring specifically to the Los Santos EMS operation.
+
+Current leadership:
+
+**Habibi Kabibi**
+
+* Director of SAMS
+* Chief of LSEMS
+
+Update all incorrect leadership information accordingly.
+
+Do not mention the roleplay server name anywhere inside the in-character website content.
+
+---
+
+# 3. VISUAL THEME AND LOGO
+
+The current visual identity does not properly represent SAMS/LSEMS.
+
+Update the theme to feel like a professional internal emergency medical services portal.
+
+Replace the generic heart logo currently being used with the **LSEMS logo that already exists in the project's assets folder**.
+
+Use the existing logo asset rather than creating a new one.
+
+Maintain a professional medical/emergency-services design while keeping the interface modern, clean, responsive, and readable.
+
+---
+
+# 4. DATES
+
+The website contains outdated dates.
+
+Update outdated displayed dates to appropriate dates between:
+
+**July 10, 2026 – July 17, 2026**
+
+Do not leave old 2025 dates or unrelated outdated dates unless there is a legitimate historical reason.
+
+---
+
+# 5. FOOTER
+
+Add a small and subtle creator credit in the footer:
+
+**Created by basilmellow**
+
+This should not dominate the footer.
+
+Also include an appropriate confidentiality notice for internal SAMS/LSEMS information.
+
+---
+
+# 6. CONFIDENTIALITY AND PRINTING
+
+The portal contains internal/confidential departmental information.
+
+Remove all website-provided:
+
+* Print buttons
+* Print icons
+* Print menu actions
+
+Add print-specific CSS if appropriate to discourage normal webpage printing.
+
+Add an appropriate confidentiality notice explaining that internal information, particularly roster information, is intended only for authorized personnel and should not be distributed.
+
+Do not claim that browser printing or screenshots can technically be completely prevented.
+
+---
+
+# 7. NAVIGATION
+
+Audit and fix the entire sidebar/navigation system.
+
+The existing sidebar has interactions that do not correctly navigate to their destinations.
+
+Ensure every remaining sidebar item correctly routes to the intended page or section.
+
+Remove all navigation links associated with deleted pages.
+
+There should ultimately be **6 main sidebar options**.
+
+Rename:
+
+**Personnel → Roster**
+
+Apply this everywhere, including navigation, page headings, breadcrumbs, routes where appropriate, and UI labels.
+
+---
+
+# 8. REMOVE FORMS SECTION
+
+Completely remove the dedicated Forms section/page.
+
+The public/normal-user-facing website should not accept operational form submissions.
+
+Remove:
+
+* User input forms
+* Leave submission forms
+* Unnecessary public data collection
+* Form routes
+* Form navigation
+
+If an informational action such as **Leave Request** remains elsewhere, clicking it should display a modal/dialog instead of a form.
+
+Example:
+
+**Leave of Absence Request**
+
+Leave requests must be submitted through Gov Mail (Discord).
+
+Navigate to the **SAMS** category and use **#EMS-LOA**.
+
+Provide only an **Understood/Close** button.
+
+Do not collect any information.
+
+---
+
+# 9. REMOVE RESOURCES SECTION
+
+Completely remove the Resources section/page.
+
+Remove:
+
+* Resources sidebar navigation
+* Downloads category
+* Reference section
+* Broken reference links
+* Resource-related routes
+* Orphaned components
+
+Relevant operational information is already covered by SOP documentation.
+
+---
+
+# 10. AUTHENTICATION
+
+Remove the existing broken Discord OAuth authentication.
+
+Replace it with a simple protected **Admin Login**.
+
+Admin Login should contain only:
+
+* Username
+* Password
+* Login
+
+Do not provide:
+
+* Registration
+* Sign Up
+* Create Account
+
+There should be no public registration functionality.
+
+IMPORTANT: Do not hardcode the admin username/password into frontend JavaScript or publicly exposed source code.
+
+Implement authentication securely using an appropriate server-side approach and environment variables.
+
+Normal users do not need to log in simply to use normal permitted portal functionality unless the existing architecture requires it.
+
+---
+
+# 11. ADMIN DASHBOARD
+
+Create a protected Admin Dashboard.
+
+Its primary purpose is to manage the SAMS/LSEMS roster.
+
+Admins must be able to:
+
+* Add personnel
+* Edit personnel
+* Remove personnel
+* Change rank
+* Change callsign
+* Change status
+* Change post
+* Update promotion/demotion information
+* Update qualifications
+* Update Discord tag
+
+Ask for confirmation before permanently deleting personnel.
+
+Roster changes must persist permanently and appear to users without requiring a GitHub commit or Vercel redeployment.
+
+Use a proper persistent database/storage solution suitable for the existing technology stack.
+
+---
+
+# 12. ROSTER SECTION
+
+Rename the existing Personnel section to:
+
+**Roster**
+
+Normal users should have read-only roster access.
+
+Admins should have management access.
+
+Create a professional responsive roster table.
+
+Roster fields:
+
+* Callsign
+* Rank
+* Name
+* Date of Join
+* Last Promo/Demo Date
+* Promo/Demo
+* Job Status
+* Post
+* FTD
+* Bike Unit
+* Medivac
+* FTO
+* Discord Tag
+
+Job Status options:
+
+* Active
+* Inactive
+* LOA
+
+Post options:
+
+* High Command
+* Medi High Command
+* Medic Command
+* Medic Supervisor
+* Medic
+* Medic in Training
+
+Use checkbox/boolean values for:
+
+* FTD
+* Bike Unit
+* Medivac
+
+Use True/False for:
+
+* FTO
+
+Add useful roster functionality:
+
+* Search by name
+* Search by callsign
+* Filter by rank
+* Filter by job status
+* Filter by post
+
+Show qualifications such as FTD, Bike Unit, Medivac, and FTO using clean badges/icons where appropriate.
+
+Admin controls must only appear to authenticated admins.
+
+Prevent or warn against duplicate callsign assignments.
+
+---
+
+# 13. SAMS RANK STRUCTURE
+
+Use this exact rank hierarchy:
+
+🏥 **SAMS Rank Structure**
+
+👑 Chief
+⭐ Deputy Chief
+🛡 Captain
+🩺 Surgeon
+👨‍⚕️ Senior Doctor
+👨‍⚕️ Doctor
+🩺 Junior Doctor
+🚑 Senior Paramedic
+🚑 Paramedic
+🩹 Resident
+💉 Advanced EMT
+💉 EMT
+🎓 Student
+
+Use these emojis as visual prefixes/icons in the rank structure UI.
+
+Remove outdated ranks that conflict with this structure.
+
+---
+
+# 14. CALLSIGN STRUCTURE
+
+Use the provided SAMS roster screenshots as the source for the callsign structure.
+
+Implement:
+
+**Chief**
+
+* XE-100
+
+**Deputy Chief**
+
+* XE-101
+
+**Captain**
+
+* CP-250
+* CP-251
+
+**Surgeon**
+
+* S-300
+* S-301
+
+**Senior Doctor**
+
+* SD-350
+* SD-351
+
+**Doctor**
+
+* D-400 to D-402
+
+**Junior Doctor**
+
+* JD-450 to JD-455
+
+**Senior Paramedic**
+
+* SP-500 to SP-504
+
+**Paramedic**
+
+* P-550 to P-558
+
+**Resident**
+
+* R-600 to R-605
+
+**Advanced EMT**
+
+* AE-650 to AE-653
+
+**EMT**
+
+* E-700 to E-706
+
+**Student**
+
+* ST-900 to ST-906
+
+Update outdated callsigns throughout the website and SOP.
+
+---
+
+# 15. CERTIFICATE SECTION
+
+Update certificate requirements.
+
+## Medical Certificate
+
+Change supervised field hours:
+
+**40 hours → 20 supervised field hours**
+
+## Medivac Certificate
+
+Change flying-hour requirement:
+
+**200 hours → 100 flying hours**
+
+## FTO Certificate
+
+Change minimum requirement:
+
+**6 months → 3 months**
+
+Remove the **16-hour course** requirement completely.
+
+Remove the Course Content section.
+
+## Instructor Certification
+
+Remove the entire Instructor Certification section.
+
+Remove:
+
+* Card
+* Description
+* Requirements
+* Related UI
+* Related navigation/references
+
+---
+
+# 16. FTD — FIELD TRAINING DEPARTMENT
+
+Update the Field Training Department section.
+
+Review existing terminology involving:
+
+* FTO
+* FTH
+* FTD
+
+Update the currently displayed operational role structure to correctly use the requested current roles:
+
+* Lead FTO
+* FTO Commander
+
+Additionally, rename the existing:
+
+**FTD Commander → FTD Head**
+
+Ensure these terms are applied consistently according to their correct context and do not leave contradictory titles.
+
+---
+
+# 17. FTD CONTACT
+
+Completely remove the Contact section from the FTD Overview.
+
+Remove associated contact cards, contact details, and buttons.
+
+Do not leave empty layout space.
+
+---
+
+# 18. FTO REQUIREMENT
+
+For the FTD/FTO eligibility requirement referring to minimum time at the current rank, change:
+
+**6 months → Minimum 1 month at current rank**
+
+Note: This is separate from any general FTO certificate requirement explicitly defined elsewhere. Use the requirement in its correct context and avoid displaying contradictory eligibility information.
+
+---
+
+# 19. TRAINEE / CADET ACADEMY
+
+Change the Cadet Academy/Trainee Program from:
+
+**4 weeks → 2 weeks total**
+
+Condense the existing useful material into:
+
+### Week 1 — Academy & Core Training
+
+Essential knowledge and practical preparation.
+
+### Week 2 — Field Training Phase
+
+Supervised field training and practical evaluation.
+
+Keep this concise.
+
+Remove the entire:
+
+**Graduation Requirements**
+
+section.
+
+---
+
+# 20. FTO CERTIFICATION CLEANUP
+
+Remove from FTO Certification:
+
+* Course Content
+* Instructor Certification
+* 16-hour course references
+
+Keep only currently relevant certification information.
+
+---
+
+# 21. MEDIVAC DIVISION
+
+Update the entire Medivac Division section.
+
+## Pilot SOP
+
+Change minimum required flight hours to:
+
+**50 flight hours**
+
+## Flight Medic SOP
+
+Change minimum field-hour requirement:
+
+**200 field hours → 100 field hours**
+
+## Medivac Requirements
+
+Where the relevant Medivac pilot/flight requirement is displayed, update it to:
+
+**50 flight hours**
+
+Keep the distinction clear between:
+
+* Pilot flight-hour requirements
+* Flight Medic field-hour requirements
+* General Medivac certificate requirements elsewhere
+
+Do not accidentally merge unrelated requirements.
+
+## Training Section
+
+Completely remove the **Training** section from the Medivac Division.
+
+Remove associated:
+
+* Training cards
+* Training content
+* Navigation anchors
+* Unused components
+
+---
+
+# 22. EMS MEDICAL SYSTEM — CURRENT CAPABILITIES
+
+Update the EMS interaction/treatment documentation so it reflects what is actually available in the current EMS system.
+
+Based on the provided screenshots, EMS currently has a body-part/injury treatment interface and can use available medical items.
+
+Document only currently available capabilities.
+
+EMS can currently check:
+
+* Pulse
+* Temperature
+
+Remove documentation for medical interactions, diagnostics, vital checks, procedures, or equipment that are not actually available in the current system.
+
+The available inventory shown includes medical items such as:
+
+* Tourniquet
+* Blood Bag 250ml
+* Blood Bag 500ml
+* Antipyretics
+* Ointment
+* Painkillers
+* Gauze
+* Adrenaline
+* Cyclonamine
+* Disinfectant
+* Bandage
+* Splint
+* Suture Kit
+* Morphine
+* Medical Kit / Advanced Medical items as available in-game
+
+Also account for operational equipment visible in the system where relevant, such as:
+
+* Medic Bag
+* Stretcher
+* Wheelchair
+* Crutch
+* Body Bag
+
+Do not invent additional medical capabilities.
+
+Keep the treatment explanation aligned with the actual in-game medical UI: identify the injury/body area, check what treatment/items are required, and apply the appropriate available treatment.
+
+---
+
+# 23. EMS BILLING
+
+Update the billing documentation.
+
+EMS bills patients using:
+
+**emscharge**
+
+Typical EMS charges should range from:
+
+**$200–$500**
+
+The final charge depends on:
+
+* Injuries treated
+* Medicines/items used
+* Overall treatment provided
+
+Document that billing distribution is handled by the existing system, with the doctor/EMS member receiving the applicable cut and the appropriate portion going to the society/department account.
+
+Do not invent exact percentage splits unless they are explicitly provided later.
+
+---
+
+# 24. NANCY NPC TREATMENT
+
+Document the NPC treatment option.
+
+If no doctor/EMS personnel are available on duty, patients can receive treatment from:
+
+**Nancy (NPC)**
+
+Treatment cost:
+
+**$500**
+
+Keep this explanation simple.
+
+---
+
+# 25. INSURANCE
+
+Update insurance information to:
+
+**1 Month Insurance:** $4,000
+
+**7 Days Insurance:** $1,000
+
+Remove conflicting old insurance prices/durations.
+
+---
+
+# 26. EMS INTERACTION SECTION CLEANUP
+
+Remove the following sections from EMS Interaction:
+
+* Fire Department
+* Corrections
+* Tactical/SWAT
+
+Remove their associated cards, procedures, references, and navigation elements.
+
+Do not leave empty spaces or broken anchors.
+
+---
+
+# 27. SOP RANKS AND CALLSIGNS
+
+In the SOP, remove outdated ranks.
+
+Only use the approved SAMS rank structure defined in this prompt.
+
+Update all callsigns to the approved callsign structure.
+
+Ensure SOP, Roster, Rank Structure, and other pages all use the same ranks and callsigns.
+
+There should be no conflicting rank hierarchy anywhere on the website.
+
+---
+
+# 28. EMS RADIO
+
+The main EMS radio channel is:
+
+**Radio Channel 6**
+
+Update SOP and operational documentation accordingly.
+
+Remove conflicting primary EMS radio-channel information.
+
+---
+
+# 29. EMS FACILITY
+
+The EMS service currently operates from:
+
+**Pillbox Hill Medical Center**
+
+This is currently the only active EMS medical center in the city.
+
+Other hospitals/EMS locations may or may not be introduced in the future.
+
+Do not document other facilities as currently operational unless explicitly stated.
+
+Structure the content so additional facilities can easily be added in the future.
+
+---
+
+# 30. 10-CODES AND COLOUR CODES
+
+Update the SOP to use the **10-Codes and Colour Codes previously provided in the project/source materials**.
+
+Remove conflicting or outdated codes.
+
+Use the provided official/current SAMS code list as the source of truth.
+
+Do not invent new codes.
+
+Ensure the same codes are used consistently throughout the portal.
+
+---
+
+# 31. DUTY SHIFTS
+
+Update the shift schedule.
+
+Replace outdated shift times with:
+
+### Day Shift
+
+**12:00 PM – 7:00 PM**
+
+### Night Shift
+
+**8:00 PM – 3:00 AM**
+
+The server restart occurs around **7:00 PM**, which creates the gap between the shifts.
+
+Keep the shift presentation simple.
+
+---
+
+# 32. MINIMUM WEEKLY DUTY HOURS
+
+Change minimum required weekly duty hours:
+
+**16 hours → 8 hours per week**
+
+Update every conflicting reference.
+
+---
+
+# 33. DISCIPLINARY / STRIKE SYSTEM
+
+Update the disciplinary progression to:
+
+**Warning → Strike 1 → Strike 2 → Strike 3 → Termination from Department**
+
+Use professional departmental wording.
+
+Examples of conduct that may result in disciplinary action include:
+
+* Going on duty primarily to collect a paycheck without performing EMS responsibilities.
+* Remaining AFK while on duty.
+* Staying somewhere inactive instead of responding to/treating patients while on duty.
+* Failing to perform assigned EMS responsibilities.
+* Extended/unexplained absence without an approved LOA.
+* Other violations of SAMS/LSEMS SOP or departmental rules.
+
+Do not make the system unnecessarily complicated.
+
+The final consequence after Strike 3 is removal/termination from the department.
+
+---
+
+# 34. RECRUITMENT
+
+Simplify the Recruitment section.
+
+Recruitment currently occurs through two methods:
+
+### EMS Appointment
+
+Candidates request/take an EMS appointment through Discord and attend an interview.
+
+### Walk-In Interview
+
+When SAMS/LSEMS announces a walk-in recruitment session, candidates can attend and complete an interview.
+
+Candidates receive their appropriate starting job role/rank based on the interview outcome and their answers/performance.
+
+Remove unnecessary recruitment stages, application pipelines, tests, or procedures that are not part of this process.
+
+Do not add a website recruitment application form.
+
+---
+
+# 35. MDT / DISPATCH
+
+Update MDT documentation to match the actual available system.
+
+EMS has access to **Dispatch**.
+
+Through Dispatch, EMS can:
+
+* Receive/view incidents
+* Respond to incidents
+* Mark/set the incident waypoint
+* Mark an incident as Code 4 when resolved
+
+There is no separate MDT login process that needs to be documented.
+
+Remove unsupported MDT features.
+
+---
+
+# 36. DUTY SYSTEM
+
+EMS personnel can:
+
+* Go On Duty
+* Go Off Duty
+* Change Callsign
+
+Document only these relevant duty-management features unless additional capabilities are explicitly confirmed.
+
+Remove inaccurate or unsupported functionality.
+
+---
+
+# 37. MEDIC MANAGEMENT
+
+The existing **Medic Management** functionality can remain.
+
+Do not add unnecessary management systems beyond what is currently available unless required for the website's own protected Roster Admin Dashboard.
+
+Distinguish between:
+
+* In-game Medic Management
+* Website Admin Dashboard for managing the portal roster
+
+They are separate systems.
+
+---
+
+# 38. PUBLIC WEBSITE INTERACTION POLICY
+
+The normal website should primarily function as an informational/internal portal.
+
+Normal users should not:
+
+* Submit forms
+* Register accounts
+* Modify roster data
+* Submit LOA requests through the website
+* Submit recruitment applications
+* Upload operational information
+
+Discord/Gov Mail-based processes should be explained through informational modals or instructions.
+
+The only significant data-editing interface should be the protected Admin Dashboard.
+
+---
+
+# 39. DATA ARCHITECTURE
+
+The roster must not remain as purely hardcoded frontend data if admins are expected to manage it through the website.
+
+Use this architecture:
+
+**Normal Portal → Read roster**
+
+**Protected Admin Dashboard → Create/Edit/Delete roster records**
+
+**Persistent Database → Store roster information**
+
+**GitHub → Store source code**
+
+**Vercel → Deploy source-code updates**
+
+Therefore:
+
+Website UI/content changes:
+
+**IDE → Git Commit → GitHub → Vercel Auto Deployment**
+
+Roster changes:
+
+**Admin Login → Admin Dashboard → Database Update → Roster automatically reflects changes**
+
+Roster changes should not require a new Git commit.
+
+---
+
+# 40. FINAL CLEANUP AND CONSISTENCY AUDIT
+
+After implementing everything, perform a complete website audit.
+
+Check every page and component for:
+
+* Old ranks
+* Old callsigns
+* Old dates
+* Incorrect SAMS/LSEMS terminology
+* Old leadership names
+* Old certificate requirements
+* Incorrect FTO requirements
+* Incorrect Medivac requirements
+* Old shift times
+* Old weekly-duty requirements
+* Outdated EMS interactions
+* Unsupported medical procedures
+* Old radio channels
+* Removed Forms references
+* Removed Resources references
+* Removed Instructor Certification references
+* Removed FTD Contact references
+* Removed Graduation Requirements
+* Removed Medivac Training references
+* Removed Fire Department EMS Interaction references
+* Removed Corrections references
+* Removed Tactical/SWAT references
+* Broken links
+* Dead buttons
+* Empty cards
+* Empty page sections
+* Broken navigation
+* Unused imports
+* Dead components
+
+Ensure all remaining sidebar navigation works.
+
+Ensure mobile and desktop layouts work correctly.
+
+Ensure admin authentication is protected.
+
+Ensure admin credentials are not exposed client-side.
+
+Ensure roster data persists correctly.
+
+Ensure deleted sections do not remain accessible through direct obsolete routes.
+
+Finally, run the production build and resolve all build errors, TypeScript errors, lint-critical errors, missing assets, and broken imports.
+
+**Do not replace accurate existing content with invented information. When the new requirements above do not specify something, preserve existing content only if it is accurate and consistent with the updated SAMS/LSEMS structure.**
