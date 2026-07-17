@@ -1,0 +1,441 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Shield, Edit3, Trash2, Save, X, Search,
+  AlertTriangle, Check, ArrowLeft, UserPlus, Users
+} from "lucide-react";
+import Link from "next/link";
+import { PersonnelMember } from "@/data/types";
+import { rankHierarchy, postOptions } from "@/data/personnel";
+
+const emptyEntry: PersonnelMember = {
+  id: "",
+  name: "",
+  rank: "",
+  rankShort: "",
+  callsign: "",
+  joinDate: new Date().toISOString().split("T")[0],
+  lastPromoDemoDate: new Date().toISOString().split("T")[0],
+  promoDemo: "",
+  jobStatus: "active",
+  post: "Medic",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "",
+};
+
+const ranks = rankHierarchy.map((r) => ({ rank: r.rank, short: r.rank }));
+const jobStatuses: Array<{ value: PersonnelMember["jobStatus"]; label: string }> = [
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" },
+  { value: "loa", label: "LOA" },
+];
+
+const STORAGE_KEY = "lsems-roster-v3";
+
+export default function AdminPage() {
+  const { data: session, status: authStatus } = useSession();
+  const router = useRouter();
+
+  const [roster, setRoster] = useState<PersonnelMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<PersonnelMember | null>(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [search, setSearch] = useState("");
+  const [toast, setToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
+
+  const showToast = useCallback((type: "success" | "error", msg: string) => {
+    setToast({ type, msg });
+    setTimeout(() => setToast(null), 3500);
+  }, []);
+
+  useEffect(() => {
+    if (authStatus === "unauthenticated") router.push("/login");
+  }, [authStatus, router]);
+
+  useEffect(() => {
+    if (authStatus !== "authenticated") return;
+    (async () => {
+      try {
+        const res = await fetch("/api/roster");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.length > 0) {
+            setRoster(data);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            setLoading(false);
+            return;
+          }
+        }
+      } catch { /* fall through */ }
+      const cached = localStorage.getItem(STORAGE_KEY);
+      if (cached) {
+        setRoster(JSON.parse(cached));
+      } else {
+        const { personnel } = await import("@/data/personnel");
+        setRoster(personnel);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(personnel));
+      }
+      setLoading(false);
+    })();
+  }, [authStatus]);
+
+  const persist = useCallback((next: PersonnelMember[]) => {
+    setRoster(next);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    fetch("/api/roster", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _bulk: true, data: next }),
+    }).catch(() => {});
+  }, []);
+
+  const addMember = (entry: PersonnelMember) => {
+    if (!entry.name.trim() || !entry.rank || !entry.callsign.trim()) {
+      showToast("error", "Name, rank, and callsign are required.");
+      return;
+    }
+    if (roster.some((m) => m.callsign === entry.callsign)) {
+      showToast("error", `Callsign "${entry.callsign}" is already assigned.`);
+      return;
+    }
+    const newEntry = { ...entry, id: "m_" + Date.now() };
+    persist([...roster, newEntry]);
+    setIsAdding(false);
+    setEditing(null);
+    showToast("success", `"${newEntry.name}" added to roster.`);
+  };
+
+  const updateMember = (entry: PersonnelMember) => {
+    if (!entry.name.trim() || !entry.rank || !entry.callsign.trim()) {
+      showToast("error", "Name, rank, and callsign are required.");
+      return;
+    }
+    const dup = roster.find((m) => m.callsign === entry.callsign && m.id !== entry.id);
+    if (dup) {
+      showToast("error", `Callsign "${entry.callsign}" is already assigned to ${dup.name}.`);
+      return;
+    }
+    persist(roster.map((r) => (r.id === entry.id ? entry : r)));
+    setEditing(null);
+    showToast("success", `"${entry.name}" updated.`);
+  };
+
+  const deleteMember = (id: string) => { setDeleting(id); };
+
+  const confirmDelete = () => {
+    if (!deleting) return;
+    const member = roster.find((m) => m.id === deleting);
+    persist(roster.filter((r) => r.id !== deleting));
+    showToast("success", `"${member?.name ?? "Member"}" removed.`);
+    setDeleting(null);
+  };
+
+  const handleSave = () => {
+    if (!editing) return;
+    isAdding ? addMember(editing) : updateMember(editing);
+  };
+
+  const filtered = roster.filter((p) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return p.name.toLowerCase().includes(q) || p.callsign.toLowerCase().includes(q) || p.rank.toLowerCase().includes(q) || p.post.toLowerCase().includes(q);
+  });
+
+  const stats = {
+    total: roster.length,
+    active: roster.filter((r) => r.jobStatus === "active").length,
+    loa: roster.filter((r) => r.jobStatus === "loa").length,
+    inactive: roster.filter((r) => r.jobStatus === "inactive").length,
+  };
+
+  const isAdmin = (session?.user as any)?.isAdmin;
+
+  if (authStatus === "loading" || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-800 via-teal-700 to-cyan-800">
+        <div className="text-center">
+          <div className="w-10 h-10 border-2 border-teal-400/30 border-t-teal-400 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm text-white/40">Loading admin panel…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!session) return null;
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-800 via-teal-700 to-cyan-800">
+        <Card className="glass-card max-w-md w-full mx-4">
+          <CardContent className="p-8 text-center">
+            <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
+            <p className="text-sm text-muted-foreground mb-4">Only authorized department administrators can access roster management.</p>
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-ems-blue hover:underline">
+              <ArrowLeft className="w-4 h-4" /> Return to Portal
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-teal-800 via-teal-700 to-cyan-800">
+      <div className="border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/" className="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/60 hover:text-white">
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center">
+                <Shield className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-white">Admin Panel</h1>
+                <p className="text-xs text-white/40">Roster Management — {stats.total} members</p>
+              </div>
+            </div>
+          </div>
+          <span className="text-xs text-white/30 hidden sm:inline">Signed in as {session.user?.name}</span>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+        <AnimatePresence>
+          {toast && (
+            <motion.div key="toast" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+              className={`mb-4 p-3 rounded-lg text-sm flex items-center gap-2 ${toast.type === "success" ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400" : "bg-red-500/10 border border-red-500/20 text-red-400"}`}>
+              {toast.type === "success" ? <Check className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
+              {toast.msg}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          {[
+            { label: "Total Members", value: stats.total },
+            { label: "Active", value: stats.active, color: "text-emerald-400" },
+            { label: "On LOA", value: stats.loa, color: "text-amber-400" },
+            { label: "Inactive", value: stats.inactive, color: "text-gray-400" },
+          ].map((s) => (
+            <Card key={s.label} className="bg-white/5 border-white/10">
+              <CardContent className="p-4">
+                <div className={`text-2xl font-bold text-white ${s.color ?? ""}`}>{s.value}</div>
+                <div className="text-xs text-white/40">{s.label}</div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name, callsign, rank, or post…"
+              className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30 placeholder:text-white/30" />
+          </div>
+          <button onClick={() => { setIsAdding(true); setEditing({ ...emptyEntry }); }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-ems-red/20 text-ems-red-light text-sm font-medium hover:bg-ems-red/30 transition-colors">
+            <UserPlus className="w-4 h-4" /> Add Member
+          </button>
+        </div>
+
+        <Card className="bg-white/5 border-white/10 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left px-4 py-3 font-semibold text-white/50">Member</th>
+                  <th className="text-left px-4 py-3 font-semibold text-white/50">Rank</th>
+                  <th className="text-left px-4 py-3 font-semibold text-white/50">Callsign</th>
+                  <th className="text-left px-4 py-3 font-semibold text-white/50 hidden md:table-cell">Post</th>
+                  <th className="text-left px-4 py-3 font-semibold text-white/50">Status</th>
+                  <th className="text-left px-4 py-3 font-semibold text-white/50 hidden lg:table-cell">Discord</th>
+                  <th className="text-right px-4 py-3 font-semibold text-white/50">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.length === 0 && (
+                  <tr><td colSpan={7} className="px-4 py-10 text-center">
+                    <Users className="w-8 h-8 text-white/10 mx-auto mb-2" />
+                    <p className="text-sm text-white/30">No members found.</p>
+                  </td></tr>
+                )}
+                {filtered.map((p) => (
+                  <tr key={p.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ems-red to-rose-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                          {p.name.split(" ").map((n) => n[0]).join("")}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-medium text-white truncate">{p.name}</div>
+                          <div className="text-xs text-white/40">Joined {p.joinDate}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-white/70">{p.rank}</td>
+                    <td className="px-4 py-3"><span className="px-2 py-0.5 rounded-md bg-white/10 text-xs font-mono text-white/70">{p.callsign}</span></td>
+                    <td className="px-4 py-3 text-white/70 hidden md:table-cell">{p.post}</td>
+                    <td className="px-4 py-3">
+                      <span className={`text-xs font-medium ${p.jobStatus === "active" ? "text-emerald-400" : p.jobStatus === "loa" ? "text-amber-400" : "text-gray-400"}`}>
+                        {p.jobStatus.toUpperCase()}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-white/40 text-xs hidden lg:table-cell">{p.discordTag}</td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="flex items-center gap-1 justify-end">
+                        <button onClick={() => { setEditing({ ...p }); setIsAdding(false); }}
+                          className="p-1.5 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-colors" title="Edit">
+                          <Edit3 className="w-4 h-4" />
+                        </button>
+                        <button onClick={() => deleteMember(p.id)}
+                          className="p-1.5 rounded-lg hover:bg-red-500/20 text-white/40 hover:text-red-400 transition-colors" title="Remove">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </div>
+
+      {/* Confirm Delete Dialog */}
+      <AnimatePresence>
+        {deleting && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 z-[55]" onClick={() => setDeleting(null)} />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm z-[56] bg-teal-800 border border-white/10 rounded-2xl shadow-2xl p-6 text-center">
+              <AlertTriangle className="w-10 h-10 text-red-400 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-white mb-1">Remove Member?</h3>
+              <p className="text-sm text-white/50 mb-6">This will permanently remove <strong className="text-white">{roster.find((m) => m.id === deleting)?.name}</strong> from the roster.</p>
+              <div className="flex gap-3 justify-center">
+                <button onClick={() => setDeleting(null)} className="px-4 py-2 rounded-lg text-sm text-white/50 hover:bg-white/10 transition-colors">Cancel</button>
+                <button onClick={confirmDelete} className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 text-sm font-medium hover:bg-red-500/30 transition-colors">Remove</button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Edit / Add Modal */}
+      <AnimatePresence>
+        {editing && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 z-50" onClick={() => { setEditing(null); setIsAdding(false); }} />
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-lg z-[60] bg-teal-800 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+                <h3 className="text-lg font-semibold text-white">{isAdding ? "Add New Member" : "Edit Member"}</h3>
+                <button onClick={() => { setEditing(null); setIsAdding(false); }} className="p-1 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                <div>
+                  <label className="text-xs text-white/50 mb-1.5 block">Full Name *</label>
+                  <input type="text" value={editing.name} onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30" placeholder="e.g. John Smith" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs text-white/50 mb-1.5 block">Rank *</label>
+                    <select value={editing.rank} onChange={(e) => {
+                      const r = ranks.find((r) => r.rank === e.target.value);
+                      setEditing({ ...editing, rank: e.target.value, rankShort: r?.short ?? "" });
+                    }} className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30">
+                      <option value="">Select rank…</option>
+                      {ranks.map((r) => <option key={r.short} value={r.rank}>{r.rank}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs text-white/50 mb-1.5 block">Callsign *</label>
+                    <input type="text" value={editing.callsign} onChange={(e) => setEditing({ ...editing, callsign: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30" placeholder="e.g. P-550" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs text-white/50 mb-1.5 block">Job Status</label>
+                    <select value={editing.jobStatus} onChange={(e) => setEditing({ ...editing, jobStatus: e.target.value as PersonnelMember["jobStatus"] })}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30">
+                      {jobStatuses.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs text-white/50 mb-1.5 block">Post</label>
+                    <select value={editing.post} onChange={(e) => setEditing({ ...editing, post: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30">
+                      {postOptions.map((p) => <option key={p} value={p}>{p}</option>)}
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs text-white/50 mb-1.5 block">Join Date</label>
+                    <input type="date" value={editing.joinDate} onChange={(e) => setEditing({ ...editing, joinDate: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30" />
+                  </div>
+                  <div>
+                    <label className="text-xs text-white/50 mb-1.5 block">Last Promo/Demo Date</label>
+                    <input type="date" value={editing.lastPromoDemoDate} onChange={(e) => setEditing({ ...editing, lastPromoDemoDate: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30" />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-white/50 mb-1.5 block">Promo/Demo Description</label>
+                  <input type="text" value={editing.promoDemo} onChange={(e) => setEditing({ ...editing, promoDemo: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30" placeholder="e.g. Promoted to Paramedic" />
+                </div>
+                <div>
+                  <label className="text-xs text-white/50 mb-1.5 block">Discord Tag</label>
+                  <input type="text" value={editing.discordTag} onChange={(e) => setEditing({ ...editing, discordTag: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-ems-red/30" placeholder="e.g. john#1234" />
+                </div>
+                <div className="grid grid-cols-4 gap-3">
+                  {[
+                    { key: "ftd", label: "FTD" },
+                    { key: "bikeUnit", label: "Bike Unit" },
+                    { key: "medivac", label: "Medivac" },
+                    { key: "fto", label: "FTO" },
+                  ].map((c) => (
+                    <label key={c.key} className="flex items-center gap-2 cursor-pointer p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                      <input type="checkbox" checked={(editing as any)[c.key]} onChange={(e) => setEditing({ ...editing, [c.key]: e.target.checked })}
+                        className="w-4 h-4 rounded bg-white/10 border-white/20 text-ems-red focus:ring-ems-red/30" />
+                      <span className="text-xs text-white/70">{c.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/10">
+                <button onClick={() => { setEditing(null); setIsAdding(false); }}
+                  className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/10 transition-colors">Cancel</button>
+                <button onClick={handleSave} disabled={!editing?.name.trim() || !editing?.rank || !editing?.callsign.trim()}
+                  className="px-5 py-2 rounded-lg bg-ems-red text-white text-sm font-medium hover:bg-ems-red-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2">
+                  <Save className="w-4 h-4" /> {isAdding ? "Add Member" : "Save Changes"}
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

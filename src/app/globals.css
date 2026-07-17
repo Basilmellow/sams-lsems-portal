@@ -1,26 +1,148 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-navy: #0c1a24;
+  --color-navy-light: #163040;
+  --color-navy-lighter: #1e4050;
+  --color-ems-red: #dc2626;
+  --color-ems-red-light: #ef4444;
+  --color-ems-red-dark: #b91c1c;
+  --color-ems-blue: #0891b2;
+  --color-ems-blue-light: #22d3ee;
+  --color-ems-gold: #d97706;
+  --color-surface: #ffffff;
+  --color-surface-dark: #f8fafb;
+  --color-border: #e5e7eb;
+  --color-border-dark: #d1d5db;
+  --color-muted: #6b7280;
+  --color-muted-dark: #94a3b8;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+.dark {
+  --background: #0c1a24;
+  --foreground: #e2e8f0;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+.dark * {
+  scrollbar-color: #475569 transparent;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 231, 235, 0.6);
+}
+
+.dark .glass {
+  background: rgba(12, 26, 36, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(229, 231, 235, 0.6);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.dark .glass-card {
+  background: rgba(12, 26, 36, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slide-in {
+  animation: slide-in-right 0.3s ease-out forwards;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(8, 145, 178, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(8, 145, 178, 0.6); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.printable-content {
+  font-size: 12pt;
+  line-height: 1.6;
+}
+
+/* Print discouragement */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  body::before {
+    content: "CONFIDENTIAL — Do not print internal SAMS/LSEMS information.";
+    display: block;
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    color: red;
+    padding: 20px;
+    background: #fff0f0;
+    border-bottom: 3px solid red;
+  }
+  .no-print, .sidebar, header, nav, footer, .no-print {
+    display: none !important;
+  }
+  main {
+    display: block !important;
+    padding: 20px !important;
+  }
+  main::after {
+    content: "CONFIDENTIAL — Internal SAMS/LSEMS Information. Do not distribute.";
+    display: block;
+    text-align: center;
+    font-size: 10pt;
+    font-weight: bold;
+    color: red;
+    padding: 20px;
+    border-top: 3px solid red;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-open { transform: translateX(0) !important; }
 }
