@@ -48,14 +48,14 @@ export default function SOPIndex() {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Standard Operating Procedures</h1>
-            <p className="text-sm text-muted-foreground">SAMS/LSEMS Administrative Policies &amp; SOP · Current as of July 2026</p>
+            <p className="text-sm text-gray-400">SAMS/LSEMS Administrative Policies &amp; SOP · Current as of July 2026</p>
           </div>
         </div>
 
         <Card className="glass-card mb-8">
           <CardContent className="p-6">
             <h2 className="text-lg font-semibold mb-3">EMS Oath</h2>
-            <blockquote className="border-l-4 border-ems-red pl-4 py-2 bg-ems-red/5 rounded-r-lg text-sm italic text-muted-foreground">
+            <blockquote className="border-l-4 border-ems-red pl-4 py-2 bg-ems-red/5 rounded-r-lg text-sm italic text-gray-400">
               &quot;I, _______________, do solemnly swear (or affirm) that I will support and defend the Constitution of the State of San Andreas against all enemies, foreign and domestic; that I will bear true faith and allegiance to the Constitution of the State of San Andreas; that I take this obligation freely, without any mental reservation or purpose of evasion, and that I will well and faithfully discharge the duties of the office upon which I am about to enter.&quot;
             </blockquote>
           </CardContent>
@@ -81,9 +81,9 @@ export default function SOPIndex() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="text-sm font-medium group-hover:text-ems-red transition-colors">{ch.title}</div>
-                              <div className="text-[10px] text-muted-foreground mt-1">Updated {ch.lastUpdated}</div>
+                              <div className="text-[10px] text-gray-400 mt-1">Updated {ch.lastUpdated}</div>
                             </div>
-                            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
+                            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                           </div>
                         </CardContent>
                       </Card>

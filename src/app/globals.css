@@ -5,22 +5,28 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-navy: #0c1a24;
-  --color-navy-light: #163040;
-  --color-navy-lighter: #1e4050;
-  --color-ems-red: #dc2626;
-  --color-ems-red-light: #ef4444;
-  --color-ems-red-dark: #b91c1c;
-  --color-ems-blue: #0891b2;
-  --color-ems-blue-light: #22d3ee;
+  --color-navy: #08141F;
+  --color-navy-mid: #0E1E2C;
+  --color-navy-card: #132634;
+  --color-navy-border: #22394A;
+  --color-ems-red: #EF4444;
+  --color-ems-red-light: #f87171;
+  --color-ems-red-dark: #DC2626;
+  --color-ems-teal: #14B8A6;
+  --color-ems-teal-dark: #0D9488;
+  --color-ems-blue: #14B8A6;
+  --color-ems-blue-light: #38BDF8;
   --color-ems-gold: #d97706;
+  --color-ems-success: #22C55E;
+  --color-ems-warning: #F59E0B;
+  --color-ems-emergency: #EF4444;
   --color-surface: #ffffff;
   --color-surface-dark: #f8fafb;
   --color-border: #e5e7eb;
-  --color-border-dark: #d1d5db;
+  --color-border-dark: #22394A;
   --color-muted: #6b7280;
-  --color-muted-dark: #94a3b8;
-  --font-sans: var(--font-geist-sans);
+  --color-muted-dark: #94A3B8;
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -30,17 +36,17 @@
 }
 
 .dark {
-  --background: #0c1a24;
-  --foreground: #e2e8f0;
+  --background: #08141F;
+  --foreground: #F8FAFC;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d1d5db transparent;
+  scrollbar-color: #22394A transparent;
 }
 
 .dark * {
-  scrollbar-color: #475569 transparent;
+  scrollbar-color: #22394A transparent;
 }
 
 body {
@@ -49,30 +55,60 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(229, 231, 235, 0.6);
-}
-
-.dark .glass {
-  background: rgba(12, 26, 36, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
+/* Glass card - Emergency Medical Command Center style */
 .glass-card {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(19, 38, 52, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(229, 231, 235, 0.6);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(34, 57, 74, 0.6);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .dark .glass-card {
-  background: rgba(12, 26, 36, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(19, 38, 52, 0.65);
+  border: 1px solid rgba(34, 57, 74, 0.6);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass blur for sidebar */
+.sidebar-glass {
+  background: rgba(14, 30, 44, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(34, 57, 74, 0.5);
+}
+
+@keyframes ecg-line {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.animate-ecg {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 40%,
+    #14B8A6 42%,
+    #14B8A6 43%,
+    transparent 43%,
+    transparent 45%,
+    #14B8A6 46%,
+    #14B8A6 47%,
+    transparent 48%,
+    transparent 49%,
+    #38BDF8 50%,
+    #38BDF8 50.5%,
+    transparent 51%,
+    transparent 53%,
+    #14B8A6 54%,
+    #14B8A6 55%,
+    transparent 55%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: ecg-line 4s linear infinite;
+  opacity: 0.15;
 }
 
 @keyframes fade-in {
@@ -94,12 +130,34 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(8, 145, 178, 0.3); }
-  50% { box-shadow: 0 0 20px rgba(8, 145, 178, 0.6); }
+  0%, 100% { box-shadow: 0 0 5px rgba(20, 184, 166, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(20, 184, 166, 0.6); }
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.monitor-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.monitor-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #14B8A6, transparent);
+  animation: scan-line 3s ease-in-out infinite;
+  opacity: 0.4;
 }
 
 .printable-content {
@@ -107,7 +165,6 @@ body {
   line-height: 1.6;
 }
 
-/* Print discouragement */
 @media print {
   body {
     background: white !important;

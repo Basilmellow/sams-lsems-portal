@@ -42,33 +42,69 @@ To provide timely, safe, and effective air medical transport services, ensuring 
     content: `# MEDIVAC Pilot Standard Operating Procedures
 
 ## Requirements
-- Valid pilot's license
-- Minimum **50 flight hours**
-- Completion of MEDIVAC pilot training
+
+- Valid Pilot License
+- Minimum **50 Flight Hours**
+- Completion of MEDIVAC Pilot Training
 - Annual proficiency check
 - Night flight certification
+- Personnel authorized by the **High Command** with a valid MEDIVAC certification may be exempt from the minimum requirement.
 
 ## Pre-Flight Checklist
-1. Complete aircraft walk-around inspection
-2. Check fuel levels (minimum 75% for dispatch)
-3. Verify all avionics operational
-4. Check weather conditions
-5. Verify communication equipment
-6. Complete pre-flight documentation
+
+Every pilot must complete inspection before every deployment.
+
+### MDT Vehicle Check
+Confirm:
+- Vehicle Status
+- Fuel Level
+- Damage Status
+- Availability
+
+### Exterior Inspection
+- Main Rotor
+- Tail Rotor
+- Landing Skids
+- Doors
+- Windows
+
+### Interior Inspection
+- Medical Kit
+- Oxygen Supply
+- Stretcher
+- Radio
+- Fuel Gauge
+
+### Fuel Check
+- Refuel the aircraft before deployment if required.
+- Aircraft should not depart with insufficient fuel.
+
+### Dispatch Check
+
+Example Radio Call:
+
+"MEDIVAC One to Dispatch, aircraft inspected, operational, taking off."
 
 ## Flight Rules
-1. Follow all FAA/regulatory flight rules
-2. Maintain minimum altitude for area type
-3. Avoid populated areas when possible
-4. Monitor weather continuously
-5. Report position every 15 minutes
+
+1. Always complete the Pre-Flight Inspection before takeoff.
+2. A qualified **Co-Pilot/Flight Medic is mandatory** for all MEDIVAC flights.
+3. The co-pilot is responsible for navigation, communication, and operating the helicopter camera.
+4. Maintain an operational cruising altitude between **1000–1200 ft** unless operationally required otherwise.
+5. Hover briefly before landing to assess the landing zone.
+6. Hover briefly after takeoff before departing the area.
+7. No MEDIVAC flights are permitted during severe or unsafe weather conditions.
+8. Visually inspect and confirm the landing zone is safe before landing.
+9. Follow all Dispatch instructions during the mission.
 
 ## Landing Zone Procedures
-1. Survey LZ from altitude before approach
-2. Communicate with ground crew
-3. Approach into wind when possible
-4. Maintain safe hover height
-5. Secure aircraft before allowing patient loading
+
+1. Survey the landing zone from altitude.
+2. Hover above the landing zone before descent.
+3. Confirm the landing zone is clear of vehicles, pedestrians and obstacles.
+4. The co-pilot should assist using the helicopter camera.
+5. Land only after confirming the area is safe.
+6. Maintain rotor awareness during patient loading and unloading.
 
 ## Emergency Procedures
 - Engine failure: Autorotate to nearest safe area

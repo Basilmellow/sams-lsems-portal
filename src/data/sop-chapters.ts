@@ -562,25 +562,52 @@ Starting rank is determined by interview outcome and answers/performance. There 
     lastUpdated: "2026-07-12",
     content: `# MDT / Dispatch
 
-## Dispatch System
+# MDT / Dispatch Guide
 
-EMS has access to **Dispatch** for incident management.
 
-## Available Dispatch Functions
-- **Receive/view incidents** — See incoming calls and incidents
-- **Respond to incidents** — Accept and respond to dispatched calls
-- **Mark incident waypoint** — Set waypoint to incident location
-- **Mark Code 4** — Mark an incident as resolved
+The MDT is the primary system used by EMS personnel for daily operations.
+
+## MDT Sections
+
+The following sections are available through the MDT:
+
+- Citizens
+- Incidents
+- Reports
+- Court Cases
+- Messages
+- SOP
+- Roster
+
+## Dispatch
+
+Dispatch is used to:
+
+- View incoming incidents
+- Accept incidents
+- Set GPS waypoint
+- Respond to incidents
+- Mark Code 4 when complete
+
+## Muscle Keys
+
+**I Key**
+- Open Dispatch
+- View latest incident quickly
+
+**Y Key**
+- Quick access to recently received incidents
 
 ## Dispatch Workflow
-1. Dispatch receives a call
-2. EMS units are notified
-3. Unit responds and marks waypoint
-4. On arrival, assess and treat
-5. Mark Code 4 when resolved
-6. Return to service
 
-There is no separate MDT login process beyond the standard duty system.`,
+1. Receive incident.
+2. Accept dispatch.
+3. Set waypoint.
+4. Respond to scene.
+5. Treat patient.
+6. Submit report if required.
+7. Mark Code 4.
+8. Return available.`,
   },
   {
     id: "billing",

@@ -32,7 +32,7 @@ export default function InteractionsIndex() {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">EMS Interactions</h1>
-            <p className="text-sm text-muted-foreground">Cross-agency protocols and coordination procedures</p>
+            <p className="text-sm text-gray-400">Cross-agency protocols and coordination procedures</p>
           </div>
         </div>
 
@@ -57,7 +57,7 @@ export default function InteractionsIndex() {
                             <div className="flex-1 min-w-0">
                               <div className="text-sm font-medium group-hover:text-amber-500 transition-colors">{sc.title}</div>
                             </div>
-                            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
+                            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                           </div>
                         </CardContent>
                       </Card>

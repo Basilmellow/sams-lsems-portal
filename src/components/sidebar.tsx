@@ -6,24 +6,23 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, FileText, Shield, Plane, GraduationCap, Users,
-  Award, ChevronDown, ChevronRight,
-  Menu, X, Settings
+  Award, ChevronDown, ChevronRight, CalendarCheck,
+  Megaphone, Settings, X, Menu, BookOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import { useSession } from "next-auth/react";
 
 interface NavItem {
   label: string;
   href: string;
   icon: React.ReactNode;
+  emoji?: string;
   children?: { label: string; href: string }[];
 }
 
 const navItems: NavItem[] = [
-  { label: "Home", href: "/", icon: <Home className="w-4 h-4" /> },
+  { label: "Dashboard", href: "/", icon: <Home className="w-4 h-4" />, emoji: "🏥" },
   {
-    label: "SOP", href: "/sop", icon: <FileText className="w-4 h-4" />,
+    label: "SOP", href: "/sop", icon: <BookOpen className="w-4 h-4" />, emoji: "📖",
     children: [
       { label: "Chain of Command", href: "/sop/chain-of-command" },
       { label: "Rank Structure", href: "/sop/rank-structure" },
@@ -49,7 +48,7 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    label: "EMS Interactions", href: "/interactions", icon: <Shield className="w-4 h-4" />,
+    label: "EMS Interactions", href: "/interactions", icon: <Shield className="w-4 h-4" />, emoji: "👨‍⚕️",
     children: [
       { label: "Crime Scene Response", href: "/interactions/pd-crime-scene" },
       { label: "Active Shootout", href: "/interactions/pd-active-shootout" },
@@ -60,7 +59,7 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    label: "MEDIVAC Division", href: "/medivac", icon: <Plane className="w-4 h-4" />,
+    label: "MEDIVAC Division", href: "/medivac", icon: <Plane className="w-4 h-4" />, emoji: "🚁",
     children: [
       { label: "Overview", href: "/medivac/medivac-intro" },
       { label: "Pilot SOP", href: "/medivac/medivac-pilot-sop" },
@@ -72,7 +71,7 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    label: "Field Training Dept", href: "/ftd", icon: <GraduationCap className="w-4 h-4" />,
+    label: "Field Training Dept", href: "/ftd", icon: <GraduationCap className="w-4 h-4" />, emoji: "🎓",
     children: [
       { label: "Overview", href: "/ftd/ftd-overview" },
       { label: "FTO Policies", href: "/ftd/ftd-fto-policies" },
@@ -82,8 +81,9 @@ const navItems: NavItem[] = [
       { label: "FTO Certification", href: "/ftd/ftd-certification" },
     ],
   },
-  { label: "Roster", href: "/roster", icon: <Users className="w-4 h-4" /> },
-  { label: "Certificates", href: "/certificates", icon: <Award className="w-4 h-4" /> },
+  { label: "Roster", href: "/roster", icon: <Users className="w-4 h-4" />, emoji: "👨‍⚕️" },
+  { label: "Announcements", href: "/#announcements", icon: <Megaphone className="w-4 h-4" />, emoji: "📢" },
+  { label: "Certificates", href: "/certificates", icon: <Award className="w-4 h-4" />, emoji: "🎓" },
 ];
 
 export function Sidebar() {
@@ -91,12 +91,6 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const { data: session } = useSession();
-  const isAdmin = (session?.user as any)?.isAdmin;
-
-  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const activeItem = navItems.find(item =>
@@ -116,11 +110,11 @@ export function Sidebar() {
   };
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full">
-      {/* Logo */}
-      <div className="p-4 border-b border-border dark:border-border-dark">
+    <div className="flex flex-col h-full sidebar-glass">
+      {/* Logo Section */}
+      <div className="p-4 border-b border-navy-border/50">
         <Link href="/" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ems-red to-ems-red-dark flex items-center justify-center shadow-lg shadow-ems-red/20">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ems-red to-ems-red-dark flex items-center justify-center shadow-lg shadow-ems-red/20 flex-shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.png" alt="SAMS Logo" className="w-7 h-7 object-contain" />
           </div>
@@ -130,8 +124,8 @@ export function Sidebar() {
               animate={{ opacity: 1, x: 0 }}
               className="overflow-hidden"
             >
-              <div className="text-sm font-bold tracking-tight text-foreground">SAMS</div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-widest">LSEMS Portal</div>
+              <div className="text-sm font-bold tracking-tight text-white">LSEMS</div>
+              <div className="text-[10px] text-gray-400 uppercase tracking-widest">SAMS Portal</div>
             </motion.div>
           )}
         </Link>
@@ -146,71 +140,87 @@ export function Sidebar() {
 
           return (
             <div key={item.href} className="mb-1">
-              <div
-                className={cn(
-                  "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all cursor-pointer group",
-                  isActive && !hasActiveChild
-                    ? "bg-ems-red/10 text-ems-red font-medium"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
-                  hasActiveChild && "text-foreground font-medium"
-                )}
-                onClick={() => {
-                  if (item.children) {
-                    toggleExpand(item.href);
-                  } else {
-                    setMobileOpen(false);
-                  }
-                }}
-              >
-                <span className={cn(
-                  "flex-shrink-0 transition-colors",
-                  isActive ? "text-ems-red" : "text-muted-foreground group-hover:text-foreground"
-                )}>
-                  {item.icon}
-                </span>
-                {!collapsed && (
-                  <>
-                    <span className="flex-1 truncate">{item.label}</span>
-                    {item.children && (
-                      <ChevronDown className={cn(
-                        "w-3.5 h-3.5 transition-transform flex-shrink-0",
-                        isExpanded && "rotate-180"
-                      )} />
+              {item.children ? (
+                <>
+                  <div
+                    className={cn(
+                      "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all cursor-pointer group",
+                      hasActiveChild
+                        ? "bg-ems-teal/10 text-ems-teal font-medium"
+                        : isActive
+                        ? "bg-ems-teal/10 text-ems-teal font-medium"
+                        : "text-gray-400 hover:text-white hover:bg-white/5"
                     )}
-                  </>
-                )}
-              </div>
+                    onClick={() => toggleExpand(item.href)}
+                  >
+                    <span className={cn(
+                      "flex-shrink-0 transition-colors",
+                      hasActiveChild || isActive ? "text-ems-teal" : "text-gray-400 group-hover:text-white"
+                    )}>
+                      {item.icon}
+                    </span>
+                    {!collapsed && (
+                      <>
+                        <span className="flex-1 truncate">{item.label}</span>
+                        <ChevronDown className={cn(
+                          "w-3.5 h-3.5 transition-transform flex-shrink-0",
+                          isExpanded && "rotate-180"
+                        )} />
+                      </>
+                    )}
+                  </div>
 
-              {item.children && !collapsed && (
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="ml-4 pl-3 border-l border-border dark:border-border-dark py-1">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={() => setMobileOpen(false)}
-                            className={cn(
-                              "block px-3 py-1.5 rounded-md text-xs transition-all",
-                              pathname === child.href
-                                ? "bg-ems-red/10 text-ems-red font-medium"
-                                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                            )}
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </motion.div>
+                  {item.children && !collapsed && (
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="ml-4 pl-3 border-l border-navy-border/50 py-1">
+                            {item.children.map((child) => (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                onClick={() => setMobileOpen(false)}
+                                className={cn(
+                                  "block px-3 py-1.5 rounded-md text-xs transition-all",
+                                  pathname === child.href
+                                    ? "bg-ems-teal/10 text-ems-teal font-medium"
+                                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                                )}
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   )}
-                </AnimatePresence>
+                </>
+              ) : (
+                <Link
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all group",
+                    isActive && !hasActiveChild
+                      ? "bg-ems-teal/10 text-ems-teal font-medium"
+                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                  )}
+                >
+                  <span className={cn(
+                    "flex-shrink-0 transition-colors",
+                    isActive ? "text-ems-teal" : "text-gray-400 group-hover:text-white"
+                  )}>
+                    {item.icon}
+                  </span>
+                  <span className="flex-1 truncate">{item.label}</span>
+                </Link>
               )}
             </div>
           );
@@ -221,32 +231,33 @@ export function Sidebar() {
       {!collapsed && (
         <div className="px-2 mb-2">
           <Link
-            href={isAdmin ? "/admin" : "/login"}
+            href="/admin"
             onClick={() => setMobileOpen(false)}
             className={cn(
               "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all group",
               pathname === "/admin"
                 ? "bg-amber-500/10 text-amber-500 font-medium"
-                : "text-muted-foreground hover:bg-muted/50"
+                : "text-gray-400 hover:text-white hover:bg-white/5"
             )}
           >
             <Settings className="w-4 h-4" />
             <span className="flex-1 truncate">Admin Panel</span>
-            {!isAdmin && <span className="text-[10px] text-muted-foreground/50">🔒</span>}
           </Link>
         </div>
       )}
 
       {/* Footer */}
-      <div className="p-3 border-t border-border dark:border-border-dark space-y-2">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>System Online</span>
+      {!collapsed && (
+        <div className="p-3 border-t border-navy-border/50 space-y-2">
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <div className="w-2 h-2 rounded-full bg-ems-success animate-pulse" />
+            <span>System Online</span>
+          </div>
+          <div className="text-[10px] text-gray-500 leading-relaxed">
+            Developed by <span className="font-medium text-gray-400">basilmellow</span>
+          </div>
         </div>
-        <div className="text-[10px] text-muted-foreground">
-          Created by <span className="font-medium">basilmellow</span> · v3.0.0
-        </div>
-      </div>
+      )}
     </div>
   );
 
@@ -255,7 +266,7 @@ export function Sidebar() {
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg glass-card"
+        className="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg bg-navy-card/90 backdrop-blur-lg border border-navy-border/50 text-white"
       >
         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
@@ -267,7 +278,7 @@ export function Sidebar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            className="fixed inset-0 bg-black/60 z-40 md:hidden"
             onClick={() => setMobileOpen(false)}
           />
         )}
@@ -281,7 +292,7 @@ export function Sidebar() {
             animate={{ x: 0 }}
             exit={{ x: -280 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed left-0 top-0 bottom-0 w-[280px] z-50 bg-card border-r border-border dark:border-border-dark md:hidden"
+            className="fixed left-0 top-0 bottom-0 w-[260px] z-50 md:hidden"
           >
             <SidebarContent />
           </motion.aside>
@@ -291,8 +302,8 @@ export function Sidebar() {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden md:flex flex-col border-r border-border dark:border-border-dark bg-card transition-all duration-300 flex-shrink-0",
-          collapsed ? "w-16" : "w-[260px]"
+          "hidden md:flex flex-col border-r border-navy-border/30 transition-all duration-300 flex-shrink-0",
+          collapsed ? "w-16" : "w-[250px]"
         )}
       >
         <SidebarContent />
@@ -301,10 +312,10 @@ export function Sidebar() {
       {/* Desktop collapse button */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="hidden md:flex fixed z-30 items-center justify-center w-6 h-6 rounded-full border border-border dark:border-border-dark bg-card shadow-sm hover:bg-muted transition-colors"
-        style={{ left: collapsed ? 52 : 252, top: 16 }}
+        className="hidden md:flex fixed z-30 items-center justify-center w-6 h-6 rounded-full border border-navy-border bg-navy-card shadow-sm hover:bg-navy-mid transition-colors"
+        style={{ left: collapsed ? 52 : 242, top: 16 }}
       >
-        <ChevronRight className={cn("w-3 h-3 transition-transform", collapsed ? "" : "rotate-180")} />
+        <ChevronRight className={cn("w-3 h-3 text-gray-400 transition-transform", collapsed ? "" : "rotate-180")} />
       </button>
     </>
   );

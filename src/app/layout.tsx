@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SAMS/LSEMS — Documentation Portal",
-  description: "Internal Documentation Portal for San Andreas Medical Services / Los Santos Emergency Medical Services",
+  title: "SAMS/LSEMS — Emergency Operations Portal",
+  description: "Emergency Medical Command Center — San Andreas Medical Services / Los Santos Emergency Medical Services",
   icons: { icon: "/favicon.ico" },
 };
 
@@ -25,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
-      <body className="min-h-screen flex">
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
+      <body className="min-h-screen flex bg-navy text-white">
         <Providers>
           {children}
         </Providers>

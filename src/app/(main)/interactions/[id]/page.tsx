@@ -9,7 +9,7 @@ export function generateStaticParams() {
 export default async function InteractionPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const scenario = interactionScenarios.find((sc) => sc.id === id);
-  if (!scenario) return <div className="p-8 text-center text-muted-foreground">Scenario not found.</div>;
+  if (!scenario) return <div className="p-8 text-center text-gray-400">Scenario not found.</div>;
 
   const idx = interactionScenarios.indexOf(scenario);
   const prev = idx > 0 ? { title: interactionScenarios[idx - 1].title, href: `/interactions/${interactionScenarios[idx - 1].id}` } : null;

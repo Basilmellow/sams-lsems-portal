@@ -15,8 +15,8 @@ export function Breadcrumbs() {
   };
 
   return (
-    <nav className="flex items-center gap-1 text-xs text-muted-foreground mb-4 flex-wrap">
-      <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors">
+    <nav className="flex items-center gap-1 text-xs text-gray-400 mb-4 flex-wrap">
+      <Link href="/" className="flex items-center gap-1 hover:text-white transition-colors">
         <Home className="w-3 h-3" />
         <span>Home</span>
       </Link>
@@ -27,9 +27,9 @@ export function Breadcrumbs() {
           <span key={i} className="flex items-center gap-1">
             <ChevronRight className="w-3 h-3" />
             {isLast ? (
-              <span className="text-foreground font-medium">{formatLabel(seg)}</span>
+              <span className="text-white font-medium">{formatLabel(seg)}</span>
             ) : (
-              <Link href={href} className="hover:text-foreground transition-colors">
+              <Link href={href} className="hover:text-white transition-colors">
                 {formatLabel(seg)}
               </Link>
             )}

@@ -1,0 +1,532 @@
+
+
+## What makes the PD website look better?
+
+It's not because the SOP is longer.
+
+It's because everything is separated into logical modules.
+
+Instead of
+
+> SOP.pdf
+
+they have
+
+```
+Home
+Announcements
+Roster
+Standard Operating Procedures
+Policies
+Divisions
+Training
+Forms
+Penal Code
+Promotion System
+Documents
+```
+
+That feels like an actual government website.
+
+---
+
+# I would build your website like this
+
+Instead of only "SOP", make an entire **Los Santos Emergency Medical Services Portal**
+
+```
+HOME
+│
+├── About LSEMS
+├── Director's Welcome
+├── Mission & Values
+├── Latest Announcements
+├── Recruitment Status
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+STANDARD OPERATING PROCEDURES
+
+├── Introduction
+├── EMS Oath
+├── Chain of Command
+├── Rank Structure
+├── Callsigns
+├── Radio Procedures
+├── 10 Codes
+├── Color Codes
+├── Medical Codes
+├── Duty Procedures
+├── Shift Procedures
+├── Hospital Procedures
+├── Field Treatment
+├── Patient Transport
+├── Mass Casualty Incidents
+├── Air Ambulance SOP
+├── EMS / PD Interaction
+├── EMS / DOJ Interaction
+├── EMS / Fire Interaction
+├── Evidence Handling
+├── Scene Safety
+├── Death Confirmation
+├── Morgue Procedures
+├── Billing
+├── Insurance
+├── MDT Guide
+├── Leave Policy
+├── Discipline
+├── Promotion Policy
+├── Recruitment SOP
+├── Interview SOP
+├── Graduation
+├── Training
+├── Certificates
+└── FAQ
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+PERSONNEL
+
+├── High Command
+├── Human Resources
+├── Supervisors
+├── Field Medics
+├── Active Roster
+├── Inactive
+├── LOA
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+DIVISIONS
+
+General EMS
+
+Field Training Department (FTD)
+
+Field Training Officers (FTO)
+
+Human Resources
+
+Medical Advisory Board
+
+MEDIVAC
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+MEDIVAC
+
+About MEDIVAC
+
+Pilot Requirements
+
+Medic Requirements
+
+Landing Zones
+
+Flight SOP
+
+Aircraft Safety
+
+Medical Airlift SOP
+
+Certificates
+
+Training
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+TRAINING
+
+Cadet Academy
+
+Medical Academy
+
+FTO Guide
+
+Scenario Training
+
+Practical Exams
+
+Medical Certificates
+
+MEDIVAC Certificates
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+FORMS
+
+Leave Form
+
+Promotion Form
+
+Complaint Form
+
+Commendation
+
+Medical Report
+
+Incident Report
+
+Vehicle Damage Report
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+RESOURCES
+
+Medical Handbook
+
+Drug Reference
+
+Hospital Layout
+
+Vehicle Guide
+
+Equipment Guide
+
+Uniform Guide
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+CONTACT
+
+High Command
+
+HR
+
+Recruitment
+```
+
+That is comparable to an actual departmental intranet.
+
+---
+
+# Add things PD doesn't even have
+
+Since EMS has more documentation possibilities.
+
+## Patient Treatment Flow
+
+```
+980 Call . 980 IS EMS AND 988 IS EMS RECEPTION NUMBERS.
+
+↓
+
+Dispatch
+
+↓
+
+Arrival
+
+↓
+
+Scene Safe?
+
+↓
+
+Patient Assessment
+
+↓
+
+Vitals
+
+↓
+
+Treatment
+
+↓
+
+Transport?
+
+↓
+
+Hospital
+
+↓
+
+Billing
+
+↓
+
+Report
+```
+
+---
+
+## EMS-PD Interaction
+
+This is a huge missing section.
+
+Examples
+
+### Active Shootout
+
+EMS stages nearby.
+
+Do NOT enter until scene declared Code 4.
+
+PD escorts EMS.
+
+Treat officers first if requested by Incident Commander.
+
+---
+
+### Active Hostage
+
+Remain at staging.
+
+Maintain radio silence unless contacted.
+
+Never negotiate.
+
+---
+
+### Traffic Stop
+
+Never stop inside the active stop.
+
+Wait until officer requests assistance.
+
+---
+
+### Crime Scene
+
+Do not destroy evidence.
+
+Only move objects if required to save life.
+
+Inform PD of everything touched.
+
+---
+
+### Prison
+
+Treat inmates equally.
+
+Never uncuff.
+
+Remain with correction staff.
+
+---
+
+### SWAT
+
+Follow Tactical Commander.
+
+Remain behind shield line.
+
+---
+
+## EMS-DOJ Interaction
+
+Court subpoenas
+
+Medical reports
+
+Medical confidentiality
+
+Evidence requests
+
+Patient privacy
+
+Death certificates
+
+---
+
+## Scene Safety SOP
+
+Electrical hazard
+
+Gas leak
+
+Fire
+
+Chemical spill
+
+Flood
+
+Explosion
+
+Collapsed building
+
+Aircraft crash
+
+Train incident
+
+---
+
+## MEDIVAC
+
+Since you said you have it.
+
+Create an entire section.
+
+```
+MEDIVAC
+
+Introduction
+
+Ranks
+
+Pilot SOP
+
+Medic SOP
+
+Landing Zones
+
+Approach
+
+Loading Patients
+
+Communication
+
+Night Operations
+
+Fuel
+
+Emergency Landing
+
+Maintenance
+
+Call Signs
+
+Training
+
+Certificates
+```
+
+---
+
+## Field Training Department
+
+Since you have
+
+FTD
+
+FTO
+
+This deserves an entire module.
+
+Explain
+
+How trainees are assigned.
+
+Evaluation sheets.
+
+Pass requirements.
+
+Fail requirements.
+
+Training hours.
+
+Probation.
+
+---
+
+## Certificates
+
+Medical Certificate
+
+MEDIVAC Certificate
+
+FTO Certification
+
+Instructor Certification
+
+---
+
+## Recruitment
+
+Instead of copying another server, rewrite it into your own.
+
+For example
+
+Application
+
+↓
+
+HR Review
+
+↓
+
+Interview
+
+↓
+
+Practical Assessment
+
+↓
+
+Orientation
+
+↓
+
+Medical Oath
+
+↓
+
+Uniform
+
+↓
+
+Training
+
+↓
+
+Graduation
+
+↓
+
+Roster
+
+This avoids referencing another server while preserving the workflow.
+
+---
+
+# Design
+
+I'd avoid making it look exactly like PD.
+
+Make it resemble a modern government portal.
+
+Colors
+
+```
+Dark Navy
+
+White
+
+EMS Red
+
+Grey
+
+```
+
+Use
+
+rounded cards
+
+glass effects
+
+modern tables
+
+search
+
+dark mode
+
+animations
+
+breadcrumbs
+
+version history
+
+print PDF
+
+copy buttons
+
+quick navigation
+
+live search
+
+mobile responsive
+
+---

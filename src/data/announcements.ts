@@ -44,11 +44,11 @@ export const announcements: Announcement[] = [
 ];
 
 export const departmentStats = [
-  { label: "Active Personnel", value: 22, icon: "Users", color: "text-ems-blue" },
-  { label: "On Duty Now", value: 8, icon: "Radio", color: "text-emerald-500" },
+  { label: "Active Personnel", value: 9, icon: "Users", color: "text-ems-blue" },
+  { label: "On Duty Now", value: 3, icon: "Radio", color: "text-emerald-500" },
   { label: "Calls Today", value: 34, icon: "Phone", color: "text-ems-red" },
   { label: "Avg Response Time", value: "3.1m", icon: "Clock", color: "text-amber-500" },
-  { label: "Active Units", value: 6, icon: "Ambulance", color: "text-violet-500" },
+  { label: "Active Units", value: 3, icon: "Ambulance", color: "text-violet-500" },
   { label: "MEDIVAC Status", value: "Ready", icon: "Plane", color: "text-cyan-500" },
 ];
 

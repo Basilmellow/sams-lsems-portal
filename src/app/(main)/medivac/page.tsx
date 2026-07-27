@@ -27,27 +27,27 @@ export default function MedivacIndex() {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">MEDIVAC Division</h1>
-            <p className="text-sm text-muted-foreground">Air Medical Transport Operations &amp; Procedures</p>
+            <p className="text-sm text-gray-400">Air Medical Transport Operations &amp; Procedures</p>
           </div>
         </div>
 
         <Card className="glass-card mb-8">
           <CardContent className="p-6">
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-gray-400 leading-relaxed">
               The MEDIVAC division provides rapid air medical transport for critically injured or ill patients throughout San Andreas. All MEDIVAC operations follow strict safety protocols and require specialized certifications.
             </p>
             <div className="grid grid-cols-3 gap-4 mt-4">
               <div className="text-center p-3 rounded-lg bg-muted/30">
                 <div className="text-2xl font-bold text-cyan-500">2</div>
-                <div className="text-xs text-muted-foreground">Aircraft</div>
+                <div className="text-xs text-gray-400">Aircraft</div>
               </div>
               <div className="text-center p-3 rounded-lg bg-muted/30">
                 <div className="text-2xl font-bold text-cyan-500">24/7</div>
-                <div className="text-xs text-muted-foreground">Availability</div>
+                <div className="text-xs text-gray-400">Availability</div>
               </div>
               <div className="text-center p-3 rounded-lg bg-muted/30">
                 <div className="text-2xl font-bold text-emerald-500">Ready</div>
-                <div className="text-xs text-muted-foreground">Status</div>
+                <div className="text-xs text-gray-400">Status</div>
               </div>
             </div>
           </CardContent>
@@ -66,7 +66,7 @@ export default function MedivacIndex() {
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium group-hover:text-cyan-500 transition-colors">{ch.title}</div>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
+                      <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0 mt-1" />
                     </div>
                   </CardContent>
                 </Card>

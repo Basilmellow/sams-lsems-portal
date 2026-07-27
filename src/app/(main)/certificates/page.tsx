@@ -28,8 +28,8 @@ export default function CertificatesPage() {
             <Award className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Certificates</h1>
-            <p className="text-sm text-muted-foreground">SAMS/LSEMS Professional Certifications</p>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">Certificates</h1>
+            <p className="text-sm text-gray-400">SAMS/LSEMS Professional Certifications</p>
           </div>
         </div>
 
@@ -39,24 +39,24 @@ export default function CertificatesPage() {
               <Card className="glass-card overflow-hidden h-full">
                 <div className={`h-2 bg-gradient-to-r ${certColors[cert.id] || "from-gray-400 to-gray-500"}`} />
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
+                  <CardTitle className="flex items-center gap-3 text-white">
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${certColors[cert.id] || "from-gray-400 to-gray-500"} flex items-center justify-center text-white`}>
                       {iconMap[cert.icon] || <Award className="w-6 h-6" />}
                     </div>
                     <div>
                       <div className="text-lg">{cert.title}</div>
-                      <div className="text-xs text-muted-foreground font-normal mt-0.5">SAMS Certification</div>
+                      <div className="text-xs text-gray-400 font-normal mt-0.5">SAMS Certification</div>
                     </div>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">{cert.description}</p>
-                  <h4 className="text-sm font-semibold mb-3">Requirements:</h4>
+                  <p className="text-sm text-gray-400 mb-4">{cert.description}</p>
+                  <h4 className="text-sm font-semibold mb-3 text-white">Requirements:</h4>
                   <div className="space-y-2">
                     {cert.requirements.map((req, ri) => (
                       <div key={ri} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{req}</span>
+                        <Check className="w-4 h-4 text-ems-teal mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-gray-300">{req}</span>
                       </div>
                     ))}
                   </div>

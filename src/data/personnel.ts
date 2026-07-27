@@ -38,99 +38,137 @@ export const personnel: PersonnelMember[] = [
   },
 
   // Resident
-  {
-    id: "3",
-    name: "James Walker",
-    rank: "Resident",
-    rankShort: "R",
-    callsign: "R-600",
-    joinDate: "2026-06-16",
-    lastPromoDemoDate: "2026-07-13",
-    promoDemo: "Promoted to Resident",
-    jobStatus: "active",
-    post: "Medic",
-    ftd: false,
-    bikeUnit: false,
-    medivac: false,
-    fto: false,
-    discordTag: "646331398000476160"
-  },
+{
+  id: "3",
+  name: "James Walker",
+  rank: "Resident",
+  rankShort: "R",
+  callsign: "R-600",
+  joinDate: "2026-06-16",
+  lastPromoDemoDate: "2026-07-13",
+  promoDemo: "Promoted to Resident",
+  jobStatus: "active",
+  post: "Medic",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "646331398000476160"
+},
 
-  // Advanced EMT
-  {
-    id: "4",
-    name: "Glenn Walker",
-    rank: "Advanced EMT",
-    rankShort: "AE",
-    callsign: "AE-651",
-    joinDate: "2026-07-12",
-    lastPromoDemoDate: "2026-07-12",
-    promoDemo: "Promoted to Advanced EMT",
-    jobStatus: "inactive",
-    post: "Medic",
-    ftd: false,
-    bikeUnit: false,
-    medivac: false,
-    fto: false,
-    discordTag: "712927120581722142"
-  },
+// Advanced EMT
+{
+  id: "4",
+  name: "Glenn Walker",
+  rank: "Advanced EMT",
+  rankShort: "AE",
+  callsign: "AE-651",
+  joinDate: "2026-07-10",
+  lastPromoDemoDate: "2026-08-27",
+  promoDemo: "Removed",
+  jobStatus: "inactive",
+  post: "Medic",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "712927120581722142"
+},
 
-  // EMT
-  {
-    id: "5",
-    name: "Rollexx Lynxx",
-    rank: "EMT",
-    rankShort: "E",
-    callsign: "E-700",
-    joinDate: "2026-07-12",
-    lastPromoDemoDate: "2026-07-12",
-    promoDemo: "Promoted to EMT",
-    jobStatus: "active",
-    post: "Medic",
-    ftd: false,
-    bikeUnit: false,
-    medivac: false,
-    fto: false,
-    discordTag: "1191418402502344804"
-  },
+// Advanced EMT
+{
+  id: "5",
+  name: "Rollexx Lynxx",
+  rank: "Advanced EMT",
+  rankShort: "AE",
+  callsign: "AE-652",
+  joinDate: "2026-07-10",
+  lastPromoDemoDate: "2026-08-27",
+  promoDemo: "Promoted to Advanced EMT",
+  jobStatus: "active",
+  post: "Medic",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "1191418402502344804"
+},
 
-  // Student
-  {
-    id: "6",
-    name: "Theeran Asher",
-    rank: "Student",
-    rankShort: "ST",
-    callsign: "ST-900",
-    joinDate: "2026-07-17",
-    lastPromoDemoDate: "2026-07-17",
-    promoDemo: "Joined as Student",
-    jobStatus: "active",
-    post: "Medic in Training",
-    ftd: false,
-    bikeUnit: false,
-    medivac: false,
-    fto: false,
-    discordTag: "946115829404164146"
-  },
+// EMT
+{
+  id: "6",
+  name: "Shannu U",
+  rank: "EMT",
+  rankShort: "E",
+  callsign: "E-701",
+  joinDate: "2026-08-15",
+  lastPromoDemoDate: "2026-08-15",
+  promoDemo: "Joined As EMT",
+  jobStatus: "active",
+  post: "Medic",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "798228964686299208"
+},
 
-  // EMT
-  {
-    id: "7",
-    name: "Shannu U",
-    rank: "EMT",
-    rankShort: "E",
-    callsign: "E-701",
-    joinDate: "2026-07-18",
-    lastPromoDemoDate: "2026-07-18",
-    promoDemo: "Joined As EMT",
-    jobStatus: "active",
-    post: "Medic",
-    ftd: false,
-    bikeUnit: false,
-    medivac: false,
-    fto: false,
-    discordTag: "798228964686299208"
-  }
+// EMT
+{
+  id: "7",
+  name: "Billu Singh",
+  rank: "EMT",
+  rankShort: "E",
+  callsign: "E-702",
+  joinDate: "2026-07-20",
+  lastPromoDemoDate: "2026-07-20",
+  promoDemo: "Joined As EMT",
+  jobStatus: "active",
+  post: "Medic",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "1047210370785357894"
+},
+
+// Student
+{
+  id: "8",
+  name: "Theeran Asher",
+  rank: "Student",
+  rankShort: "ST",
+  callsign: "ST-900",
+  joinDate: "2026-07-13",
+  lastPromoDemoDate: "2026-07-13",
+  promoDemo: "Joined As Student",
+  jobStatus: "active",
+  post: "Medic in Training",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "946115829404164146"
+},
+
+// Student
+{
+  id: "9",
+  name: "Chhagan Lal Seth",
+  rank: "Student",
+  rankShort: "ST",
+  callsign: "ST-901",
+  joinDate: "2026-07-19",
+  lastPromoDemoDate: "2026-07-19",
+  promoDemo: "Joined As Student",
+  jobStatus: "active",
+  post: "Medic in Training",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "1484623717215768637"
+}
 ];
 export const rankHierarchy = [
   { rank: "Chief", emoji: "👑", category: "High Command", color: "#d97706" },
