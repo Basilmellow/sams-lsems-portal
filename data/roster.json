@@ -33,7 +33,6 @@
     discordTag: "1058987142757494928"
   },
   
-  // Junior Doctor
 {
   id: "3",
   name: "Anony June",
@@ -52,7 +51,6 @@
   discordTag: "794051549524394005"
 },
 
-  // Resident
 {
   id: "4",
   name: "James Walker",
@@ -71,7 +69,6 @@
   discordTag: "646331398000476160"
   },
 
-// Advanced EMT
 {
   id: "5",
   name: "Rollexx Lynxx",
@@ -90,7 +87,7 @@
   discordTag: "1191418402502344804"
 },
 
-// EMT
+
 {
   id: "6",
   name: "Shannu U",
@@ -109,7 +106,7 @@
   discordTag: "798228964686299208"
 },
 
-// EMT
+
 {
   id: "7",
   name: "Billu Singh",
@@ -128,7 +125,7 @@
   discordTag: "1047210370785357894"
 },
 
-// Student
+
 {
   id: "8",
   name: "Theeran Asher",
@@ -147,7 +144,7 @@
   discordTag: "946115829404164146"
 },
 
-// Student
+
 {
   id: "9",
   name: "Chhagan Lal Seth",
