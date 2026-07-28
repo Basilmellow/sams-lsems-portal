@@ -36,10 +36,29 @@ export const personnel: PersonnelMember[] = [
     fto: true,
     discordTag: "1058987142757494928"
   },
+  
+  // Junior Doctor
+{
+  id: "3",
+  name: "Anony June",
+  rank: "JUNIOR DOCTOR",
+  rankShort: "JD",
+  callsign: "JD-450",
+  joinDate: "2026-07-29",
+  lastPromoDemoDate: "2026-07-29",
+  promoDemo: "Joined As Junior Doctor",
+  jobStatus: "active",
+  post: "Medic Supervisor",
+  ftd: false,
+  bikeUnit: false,
+  medivac: false,
+  fto: false,
+  discordTag: "794051549524394005"
+},
 
   // Resident
 {
-  id: "3",
+  id: "4",
   name: "James Walker",
   rank: "Resident",
   rankShort: "R",
@@ -54,26 +73,7 @@ export const personnel: PersonnelMember[] = [
   medivac: false,
   fto: false,
   discordTag: "646331398000476160"
-},
-
-// Advanced EMT
-{
-  id: "4",
-  name: "Glenn Walker",
-  rank: "Advanced EMT",
-  rankShort: "AE",
-  callsign: "AE-651",
-  joinDate: "2026-07-10",
-  lastPromoDemoDate: "2026-08-27",
-  promoDemo: "Removed",
-  jobStatus: "inactive",
-  post: "Medic",
-  ftd: false,
-  bikeUnit: false,
-  medivac: false,
-  fto: false,
-  discordTag: "712927120581722142"
-},
+  },
 
 // Advanced EMT
 {
